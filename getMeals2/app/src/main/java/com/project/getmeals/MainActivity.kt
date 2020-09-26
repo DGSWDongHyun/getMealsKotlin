@@ -19,16 +19,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private var INTPAGE : Int = 0
     private val calender : Calendar = Calendar.getInstance()
-    val school = School(School.Type.HIGH, School.Region.DAEGU, "D100000282")
+
+    private val school = School(School.Type.HIGH, School.Region.DAEGU, "D100000282")
+
+    val YEAR = parseInt(SimpleDateFormat("yyyy").format(Date()))
+    val MONTH = parseInt(SimpleDateFormat("MM").format(Date()))
+    val DAY = parseInt(SimpleDateFormat("dd").format(Date()))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
         calender.time = Date()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,9 +39,9 @@ class MainActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        val menu = school.getMonthlyMenu(calender.get(Calendar.YEAR), calender.get(Calendar.MONTH))
+        val menu = school.getMonthlyMenu(YEAR, MONTH)
 
-        binding.menuName.setText(menu.get(parseInt(SimpleDateFormat("dd").format(Date()))).lunch)
+        binding.menuName.setText(menu.get(DAY - 1).lunch)
 
 
 

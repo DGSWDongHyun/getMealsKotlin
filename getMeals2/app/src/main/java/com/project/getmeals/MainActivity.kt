@@ -2,9 +2,12 @@ package com.project.getmeals
 
 import android.R.id.toggle
 import android.app.DatePickerDialog
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
@@ -110,6 +113,7 @@ class MainActivity : AppCompatActivity() {
                 MONTH = monthOfYear + 1
                 DAY = dayOfMonth
 
+                binding.check.setChecked(false)
                 initializeLayout();
 
             }, YEAR, MONTH - 1, DAY
@@ -122,8 +126,16 @@ class MainActivity : AppCompatActivity() {
     fun RemoveNumbrOfMeals(meals: String) : String?{
         var result : String ?= ""
 
-        if(meals.isEmpty() || meals == null)
-            return "급식이 없습니다."
+
+
+
+            if(meals.isEmpty() || meals == null){
+                binding.check.visibility = INVISIBLE;
+                return "급식이 없습니다."
+            }else{
+                binding.check.visibility = VISIBLE;
+            }
+
 
         for(idx in meals.indices){
             if(!(meals.get(idx) in '0'..'9' || meals.get(idx) == '.'))
@@ -150,11 +162,11 @@ class MainActivity : AppCompatActivity() {
         binding.check.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             checkAllergy = isChecked
             if(isChecked){
-                if(!NextPage()?.isEmpty()!!) {
+                if(!NextPage()?.isEmpty()!! || NextPage() != null) {
                     binding.menuName.setText(NextPage())
                 }
             } else {
-                if (!NextPage()?.isEmpty()!!) {
+                if (!NextPage()?.isEmpty()!! || NextPage() != null) {
                     binding.menuName.setText(NextPage())
                 }
             }
@@ -165,8 +177,8 @@ class MainActivity : AppCompatActivity() {
         binding.menuName.setText(NextPage());
 
         binding.next.setOnClickListener {
-            binding.menuName.setText(NextPage())
             INTPAGE++
+            binding.menuName.setText(NextPage())
         }
 
         binding.prev.setOnClickListener {

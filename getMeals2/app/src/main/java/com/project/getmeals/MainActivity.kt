@@ -32,19 +32,35 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        calender.time = Date()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
+        initializeLayout()
+        getTime()
+
+    }
+    fun initializeLayout(){
+        calender.time = Date()
+
         val menu = school.getMonthlyMenu(YEAR, MONTH)
+        val plan = school.getMonthlySchedule(YEAR, MONTH)
+
+        if(plan != null)
+            binding.notification.setText("오늘의 학사 일정 : " + plan.get(DAY - 1).schedule)
+        else
+            binding.notification.setText("오늘은 학사 일정이 없네요.")
 
         binding.menuName.setText(menu.get(DAY - 1).lunch)
-
-
-
-
+    }
+    fun getTime() {
+        var time = SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(Date())
+        binding.time.setText(time)
+        Handler().postDelayed(Runnable {
+            binding.time.setText(time)
+            getTime()
+        },1000)
     }
 }

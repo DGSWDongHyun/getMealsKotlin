@@ -138,8 +138,12 @@ class MainActivity : AppCompatActivity() {
 
 
         for(idx in meals.indices){
-            if(!(meals.get(idx) in '0'..'9' || meals.get(idx) == '.'))
-                result += meals.get(idx)
+            if(idx < meals.length){
+                if(!(meals.get(idx) in '0'..'9' && (meals.get(idx + 1)=='개' || meals.get(idx + 1)=='인'))){
+                    if(!(meals.get(idx) in '0'..'9' || meals.get(idx) == '.'))
+                        result += meals.get(idx)
+                }
+            }
         }
         return result
     }

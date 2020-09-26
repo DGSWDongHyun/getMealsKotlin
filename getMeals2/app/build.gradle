@@ -46,6 +46,8 @@ dependencies {
     def couroutines_version = "1.2.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$couroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$couroutines_version"
-    implementation 'com.github.drawers:SpinnerDatePicker:2.0.1'
+
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+
 
 }

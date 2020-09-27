@@ -1,11 +1,13 @@
 package com.project.getmeals
 
 import android.R.id.toggle
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
+import android.view.ContextThemeWrapper
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.WindowManager
@@ -49,6 +51,18 @@ class MainActivity : AppCompatActivity() {
         initializeLayout()
         getTime()
 
+    }
+    fun showDialog() {
+        val allergyBuilder : AlertDialog.Builder =
+            AlertDialog.Builder(ContextThemeWrapper(this@MainActivity, R.style.Theme_AppCompat_Light_Dialog))
+                .setTitle("알레르기 정보 안내")
+                .setMessage(R.string.allergyInfo)
+                .setPositiveButton("확인") { dialogInterface, i ->
+                }
+
+        val allergyDialog = allergyBuilder.create()
+
+        allergyDialog.show()
     }
     fun NextPage() : String? {
         val menu = school.getMonthlyMenu(YEAR, MONTH)
@@ -127,13 +141,11 @@ class MainActivity : AppCompatActivity() {
         var result : String ?= ""
 
 
-
-
             if(meals.isEmpty() || meals == null){
-                binding.check.visibility = INVISIBLE;
+                binding.allergyInfoLayout.visibility = INVISIBLE;
                 return "급식이 없습니다."
             }else{
-                binding.check.visibility = VISIBLE;
+                binding.allergyInfoLayout.visibility = VISIBLE;
             }
 
 
@@ -162,6 +174,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         // getPlan
+
+        binding.informatioAllergy.setOnClickListener {
+            showDialog()
+        }
 
         binding.check.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             checkAllergy = isChecked

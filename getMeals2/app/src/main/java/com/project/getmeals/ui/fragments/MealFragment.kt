@@ -1,60 +1,69 @@
-package com.project.getmeals
+package com.project.getmeals.ui.fragments
 
-import android.R.id.toggle
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.opengl.Visibility
+import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.os.StrictMode
 import android.view.ContextThemeWrapper
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
-import android.view.WindowManager
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.CompoundButton
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.project.getmeals.databinding.ActivityMainBinding
-import com.project.getmeals.viewmodel.ViewModelCheck
-import com.project.getmeals.viewmodel.factory.ViewModelCheckFactory
+import com.project.getmeals.R
+import com.project.getmeals.databinding.FragmentMealBinding
 import kr.go.neis.api.School
-import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MealFragment : Fragment() {
 
-    private lateinit var binding : ActivityMainBinding
+
+    private lateinit var binding: FragmentMealBinding
     private var INTPAGE : Int = 0
     private val calender : Calendar = Calendar.getInstance()
     private val school = School(School.Type.HIGH, School.Region.DAEGU, "D100000282")
 
     var checkAllergy : Boolean = false;
-    val YEAR = parseInt(SimpleDateFormat("yyyy").format(Date()))
-    var MONTH = parseInt(SimpleDateFormat("MM").format(Date()))
-    var DAY = parseInt(SimpleDateFormat("dd").format(Date()))
+    val YEAR = Integer.parseInt(SimpleDateFormat("yyyy").format(Date()))
+    var MONTH = Integer.parseInt(SimpleDateFormat("MM").format(Date()))
+    var DAY = Integer.parseInt(SimpleDateFormat("dd").format(Date()))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentMealBinding.inflate(inflater, container, false)
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        initializeLayout()
-        getTime()
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val binding = FragmentMealBinding.inflate(layoutInflater)
+        val view = binding.root
+
+        initializeLayout()
+
+        super.onViewCreated(view, savedInstanceState)
     }
     fun showDialog() {
         val allergyBuilder : AlertDialog.Builder =
-            AlertDialog.Builder(ContextThemeWrapper(this@MainActivity, R.style.Theme_AppCompat_Light_Dialog))
+            AlertDialog.Builder(
+                ContextThemeWrapper(
+                    context,
+                    R.style.Theme_AppCompat_Light_Dialog
+                )
+            )
                 .setTitle("알레르기 정보 안내")
                 .setMessage(R.string.allergyInfo)
                 .setPositiveButton("확인") { dialogInterface, i ->
@@ -68,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         val menu = school.getMonthlyMenu(YEAR, MONTH)
         when(INTPAGE){
             0 -> {
-                binding.timesetImg.setImageDrawable(getDrawable(R.drawable.breakfast))
+                binding.timesetImg.setImageDrawable(context?.getDrawable(R.drawable.breakfast))
                 binding.timeset.setText("아침")
                 return if (checkAllergy) menu.get(DAY - 1).breakfast else RemoveNumbrOfMeals(
                     menu.get(
@@ -78,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
             1 -> {
                 binding.timeset.setText("점심")
-                binding.timesetImg.setImageDrawable(getDrawable(R.drawable.lunch))
+                binding.timesetImg.setImageDrawable(context?.getDrawable(R.drawable.lunch))
                 return if (checkAllergy) menu.get(DAY - 1).lunch else RemoveNumbrOfMeals(
                     menu.get(
                         DAY - 1
@@ -87,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             }
             2 -> {
                 binding.timeset.setText("저녁")
-                binding.timesetImg.setImageDrawable(getDrawable(R.drawable.dinner))
+                binding.timesetImg.setImageDrawable(context?.getDrawable(R.drawable.dinner))
                 return if (checkAllergy) menu.get(DAY - 1).dinner else RemoveNumbrOfMeals(
                     menu.get(
                         DAY - 1
@@ -98,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                 if(INTPAGE < 0){
                     INTPAGE = 2;
                     binding.timeset.setText("저녁")
-                    binding.timesetImg.setImageDrawable(getDrawable(R.drawable.dinner))
+                    binding.timesetImg.setImageDrawable(context?.getDrawable(R.drawable.dinner))
                     return if(checkAllergy) menu.get(DAY - 1).dinner else RemoveNumbrOfMeals(
                         menu.get(
                             DAY - 1
@@ -107,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                 }else if(INTPAGE > 2){
                     INTPAGE = 0
                     binding.timeset.setText("아침")
-                    binding.timesetImg.setImageDrawable(getDrawable(R.drawable.breakfast))
+                    binding.timesetImg.setImageDrawable(context?.getDrawable(R.drawable.breakfast))
                     return if(checkAllergy) menu.get(DAY - 1).breakfast else RemoveNumbrOfMeals(
                         menu.get(
                             DAY - 1
@@ -120,33 +129,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun SpinnerDate() {
-        val datepickerdialog: DatePickerDialog = DatePickerDialog(
-            MainActivity@ this,
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val datepickerdialog: DatePickerDialog? = context?.let {
+            DatePickerDialog(
+                it,
+                DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                MONTH = monthOfYear + 1
-                DAY = dayOfMonth
+                    MONTH = monthOfYear + 1
+                    DAY = dayOfMonth
 
-                binding.check.setChecked(false)
-                initializeLayout();
+                    binding.check.setChecked(false)
+                    initializeLayout();
 
-            }, YEAR, MONTH - 1, DAY
-        )
+                }, YEAR, MONTH - 1, DAY
+            )
+        }
 
-        datepickerdialog.show()
+        datepickerdialog?.show()
 
     }
 
     fun RemoveNumbrOfMeals(meals: String) : String?{
         var result : String ?= ""
 
-
-            if(meals.isEmpty() || meals == null){
-                binding.allergyInfoLayout.visibility = INVISIBLE;
-                return "급식이 없습니다."
-            }else{
-                binding.allergyInfoLayout.visibility = VISIBLE;
-            }
+        if(meals.isEmpty() || meals == null){
+            binding.allergyInfoLayout.visibility = View.INVISIBLE;
+            return "급식이 없습니다."
+        }else{
+            binding.allergyInfoLayout.visibility = View.VISIBLE;
+        }
 
 
         for(idx in meals.indices){
@@ -181,8 +191,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.check.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             checkAllergy = isChecked
-            if(isChecked){
-                if(!NextPage()?.isEmpty()!! || NextPage() != null) {
+            if (isChecked) {
+                if (!NextPage()?.isEmpty()!! || NextPage() != null) {
                     binding.menuName.setText(NextPage())
                 }
             } else {
@@ -211,14 +221,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    fun getTime() {
-        var time = SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(Date())
-        binding.time.setText(time)
-        Handler().postDelayed(Runnable {
-            binding.time.setText(time)
-            getTime()
-        }, 1000)
-    }
 }
-
-

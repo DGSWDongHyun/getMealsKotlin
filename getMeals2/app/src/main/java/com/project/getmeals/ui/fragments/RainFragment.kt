@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project.getmeals.R
+import com.project.getmeals.databinding.FragmentRainBinding
 
 
 class RainFragment : Fragment() {
 
+    private lateinit var binding : FragmentRainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,10 +21,13 @@ class RainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var viewRain =  inflater.inflate(R.layout.fragment_rain, container, false)
+        binding = FragmentRainBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        return viewRain
+        super.onViewCreated(view, savedInstanceState)
     }
 }

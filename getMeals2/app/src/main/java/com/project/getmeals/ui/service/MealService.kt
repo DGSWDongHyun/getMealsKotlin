@@ -22,7 +22,7 @@ class MealService : Service() {
 
         val wm = getSystemService(WINDOW_SERVICE) as WindowManager
 
-        val params = WindowManager.LayoutParams( /*ViewGroup.LayoutParams.MATCH_PARENT*/
+        val params = WindowManager.LayoutParams(
             300,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             returnAndroidVer(),

@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         getTime()
 
     }
-    fun getTime() {
+
+    fun getTime(){
         var time = SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(Date())
         binding.time.setText(time)
         Handler().postDelayed(Runnable {

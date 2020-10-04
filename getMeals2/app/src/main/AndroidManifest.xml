@@ -14,12 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <service
-            android:name=".ui.service.MealService"
-            android:enabled="true"
-            android:exported="true"></service>
 
-        <activity android:name=".ui.activites.MainActivity">
+        <activity android:name=".ui.activites.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

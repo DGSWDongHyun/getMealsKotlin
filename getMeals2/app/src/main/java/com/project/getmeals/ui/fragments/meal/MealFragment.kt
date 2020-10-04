@@ -1,8 +1,7 @@
-package com.project.getmeals.ui.fragments
+package com.project.getmeals.ui.fragments.meal
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.ContextThemeWrapper

@@ -5,26 +5,24 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class Server private constructor() {
-    private val api: ServerAPI
-    fun getApi(): ServerAPI {
-        return api
-    }
+class Server {
 
     companion object {
-        var instance: Server? = null
-            get() {
-                if (field == null) field = Server()
-                return field
-            }
-            private set
+        private val retrofitClient: Server = Server()
+
+        fun getInstance(): Server {
+            return retrofitClient
+        }
     }
 
-    init {
-        val server = Retrofit.Builder()
-            .baseUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService/")
+    fun buildRetrofit(): ServerAPI {
+        val retrofit: Retrofit? = Retrofit.Builder()
+            .baseUrl("http://api.openweathermap.org/data/2.5/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        api = server.create(ServerAPI::class.java)
+
+        val service: ServerAPI = retrofit!!.create(ServerAPI :: class.java)
+        return service
     }
+
 }

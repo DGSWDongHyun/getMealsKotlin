@@ -1,25 +1,17 @@
-package com.project.getmeals.ui.activites
+package com.project.getmeals.ui.activites.main
 
+import android.Manifest
 import android.app.AlertDialog
-import android.app.DatePickerDialog
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
-import android.os.StrictMode
-import android.view.ContextThemeWrapper
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.WindowManager
-import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
+import androidx.core.app.ActivityCompat
 import com.project.getmeals.R
 import com.project.getmeals.databinding.ActivityMainBinding
-import kr.go.neis.api.School
-import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.navigation.ui.NavigationUI.setupWithNavController as setupWithNavController1
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         )
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         getTime()
 
     }

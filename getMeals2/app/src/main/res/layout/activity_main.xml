@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activites.MainActivity">
+    tools:context=".ui.activites.main.MainActivity">
 
     <TextView
         android:id="@+id/title"
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/fragment_host"
-        android:name="com.project.getmeals.ui.fragments.MealFragment"
+        android:name="com.project.getmeals.ui.fragments.meal.MealFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

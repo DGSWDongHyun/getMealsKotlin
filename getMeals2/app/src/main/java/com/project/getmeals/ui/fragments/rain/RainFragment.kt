@@ -1,6 +1,7 @@
 package com.project.getmeals.ui.fragments.rain
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.gson.JsonObject
 import com.project.getmeals.databinding.FragmentRainBinding
@@ -52,12 +54,12 @@ class RainFragment : Fragment() {
         res.enqueue(object : Callback<JsonObject> {
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Log.d("N", "Failure : ${t.message.toString()}")
+                Log.d("Nsssssssss", "Failure : ${t.message.toString()}")
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 var jsonObj = JSONObject(response.body().toString())
-                Log.d("N", "Success :: $jsonObj")
+                Log.d("Nsssss", "Success :: $jsonObj")
 
             }
         })
@@ -74,35 +76,45 @@ class RainFragment : Fragment() {
             ) }
             != PackageManager.PERMISSION_GRANTED) {
             //권한이 없을 경우 최초 권한 요청 또는 사용자에 의한 재요청 확인
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                && ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                && ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )) {
                 // 권한 재요청
                 activity?.let {
                     ActivityCompat.requestPermissions(
-                        it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                        100)
+                        it, arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ),
+                        100
+                    )
                 }
                 return
             } else {
                 activity?.let {
                     ActivityCompat.requestPermissions(
-                        it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                        it, arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,                                                                        
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ),
                         100
                     )
                 }
                 return
             }
         }else{
-            getCurrentWeather()
-
-            val locationManager : LocationManager? = null
-            val lastKnownLocation: Location? =
-                locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            val locationManager : LocationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val lastKnownLocation: Location? = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (lastKnownLocation != null) {
                 longitude = lastKnownLocation.longitude.toString()
                 latitude = lastKnownLocation.latitude.toString()
+
+                getCurrentWeather()
             }
         }
     }

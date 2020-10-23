@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             .setTitle("종료")
             .setMessage("정말 종료하시겠어요?")
             .setPositiveButton("확인"){ dialogInterface, i ->
-                super.onBackPressed()
+                finish()
             }
             .setNegativeButton("취소"){ dialogInterface, i->
 

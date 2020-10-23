@@ -160,10 +160,9 @@ class MealFragment : Fragment() {
 
         for(idx in meals.indices){
             if(idx < meals.length){
-                if(!(meals.get(idx) in '0'..'9' && (meals.get(idx + 1)=='개' || meals.get(idx + 1)=='인'))){
-                    if(!(meals.get(idx) in '0'..'9' || meals.get(idx) == '.'))
+                if(!(meals.get(idx) in '0'..'9' || meals.get(idx) == '.'))
+                    if (meals.get(idx-1) in '0'..'9' && (meals.get(idx) == '인' || meals.get(idx) == '개') && idx != 0)
                         result += meals.get(idx)
-                }
             }
         }
         return result
